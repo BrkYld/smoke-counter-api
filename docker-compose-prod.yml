@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  smoke-counter-api:
+    build: .
+    image: smoke-counter-api
+    volumes:
+      - .:/usr/src/smoke-counter-api
+    networks:
+      - node-network
+    container_name: node-app
+    command: yarn prod
+    ports:
+      - "3000:3000"
+
+networks:
+  node-network:
+    driver: bridge
