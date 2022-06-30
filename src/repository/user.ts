@@ -18,11 +18,17 @@ export default {
     },
     getSmoke: async (id: string, date: Date | null = null): Promise<Smoke[]> => {
         const smoke = await User.findById(id, 'smoke').then(result => result?.smoke as Array<Smoke>);
+        let yesterDay = new Date();
+        let tomorrow = new Date();
+        if (date !== null) {
+            yesterDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            tomorrow = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+        }
         return date === null ?
             smoke : smoke.
                 filter(
                     (
-                        (item: Smoke) => new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1) < item.when && item.when < new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+                        (item: Smoke) => yesterDay < item.when && item.when < tomorrow
                     )
                 );
     },

@@ -35,8 +35,10 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 const smoke = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user: UserInfo  = await currentUser(req);
+        let today = new Date();
+        today.setHours(today.getHours() + 3);
         const smoke : Smoke = {
-            when: new Date(),
+            when: today,
             where : req.body,
         };
         res.status(httpStatus.OK).send(new ApiResponse(await userService.smoke(user.id, smoke)));
